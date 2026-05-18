@@ -1,8 +1,16 @@
-# shattrath
+<p align="center">
+  <img src="assets/banner.png" alt="Shattrath — Best Practices · Knowledge Hub · Documentation" width="100%">
+</p>
 
-A public, personal knowledge base of tips and tricks across various topics — kept here to share with others.
+<p align="center">
+  <em>A public knowledge base of tips and tricks across various topics — kept here to share with others.</em>
+</p>
 
-It's deliberately simple: plain Markdown, nothing to build or run. The structure is **flat, one folder per topic** at the repo root. Each topic folder is self-contained and starts with its own `README.md` describing what's inside and why you'd read it.
+---
+
+Deliberately simple: plain Markdown, nothing to build or run. The structure is **flat, one folder per topic** at the repo root. Each topic folder is self-contained and starts with its own `README.md` telling you what's inside and why you'd read it.
+
+**New here?** Pick a topic from the table below and open its `README.md` — that's the front door for everything in that folder.
 
 ## Topics
 
