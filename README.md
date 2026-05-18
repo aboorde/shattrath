@@ -8,7 +8,7 @@ It's deliberately simple: plain Markdown, nothing to build or run. The structure
 
 | Topic | What it covers |
 |---|---|
-| [cowork/](cowork/) | Claude Cowork best practices — skills, memory, workflow architecture, prompt engineering, and how Cowork differs from Claude Code. |
+| [cowork/](cowork/) | Claude Cowork best practices — skills, memory, workflow architecture, prompt engineering, how Cowork differs from Claude Code, and a practitioner-delta + Customer Success Manager playbook. |
 
 ## Conventions
 

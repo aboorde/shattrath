@@ -6,7 +6,7 @@
 
 ### Mental model
 
-**Cowork = Claude Code's brain, in a desktop GUI, sandboxed, for non-coders.** Same agentic engine; the *behavior* transfers, the *cockpit* doesn't. Code runs in a real terminal/shell; Cowork runs code in an **isolated VM**, touches only **folders you grant**, and is steered through a GUI + Skills/Connectors instead of slash commands. Desktop-only (no web/CLI). **Not** a detached cloud agent — the app must stay open while a task runs.
+**Cowork = Claude Code's brain, in a desktop GUI, sandboxed, for non-coders.** Same agentic engine; the *behavior* transfers, the *cockpit* doesn't. Code runs in a real terminal/shell; Cowork runs code in an **isolated VM**, touches only **folders you grant**, and is steered through a GUI + Skills/Connectors instead of slash commands. Desktop-only (no web/CLI). **Not** a detached cloud agent — the app must stay open while a task runs. It's "research-preview"-grade: **every run needs human review — delegation, not automation.** The win is whole-corpus batch synthesis, **not** live CRM write-back (no native Gainsight/Catalyst/Planhat/Salesforce connector today).
 
 ### The 4 building blocks — don't conflate them
 
@@ -75,6 +75,13 @@ The portable unit is the **Skill** (open standard — one `SKILL.md` works in Co
 - **No session/result sharing** — hand off the produced file. Share team setups via **admin-managed plugins** (custom skills are otherwise per-user).
 - **For IT/security:** code runs in a VM (protects the OS, **not your files**); Cowork history is **local per user**, outside standard retention, **not in the Compliance API**. Default to "Ask before acting."
 
+### CSM fast-start (see `best-practices.md` for sources)
+
+- **Don't build from scratch** — fork Anthropic's `knowledge-work-plugins`: `customer-support` (`customer-escalation` already triggers on churn-threat; `customer-research`; `draft-response`) + `sales` (`pipeline-review` → renewal-health scorer; `forecast` → gross-retention). Skills are vendor-agnostic; swap connectors in `.mcp.json`.
+- **Connector reality:** HubSpot/Zendesk/Slack/Gmail/Drive native (Google = read-only, Gmail drafts only); Salesforce/Gainsight/Catalyst/Planhat = **export-driven or 3rd-party MCP**. Design around CSV ingest + human-gated write-back.
+- **Four workflows, one lever** (paste the *whole* corpus, ~1M ctx): churn/renewal-risk from *your* churned history (champion departure = strongest signal); roster-seeded QBR prep; VoC over all NPS/tickets; **anti-hallucination gate: "UNKNOWN, not inference" + source-quote column, cross-check CRM before any commitment.**
+- **Scheduling:** low-stakes weekly brief → Cowork scheduled task; SLA/renewal-bound → **Cloud Routines** (Cowork tasks need the app open *and view focused*; missed runs get one catch-up).
+
 ### First week
 
 1. Make a **Project** per project/program (folder + tight Instructions). Grant only the folder you need.
@@ -84,4 +91,4 @@ The portable unit is the **Skill** (open standard — one `SKILL.md` works in Co
 5. Promote your best skills into a shared **plugin** for the team (via admin).
 
 ---
-*Full detail & sources: `overview-and-cowork-vs-code.md` · `skills.md` · `memory.md` · `workflow-architecture-and-prompting.md` · `platform-deep-dive.md` · `slash-commands-and-customization.md`*
+*Full detail & sources: `best-practices.md` (practitioner delta + CSM playbook) · `overview-and-cowork-vs-code.md` · `skills.md` · `memory.md` · `workflow-architecture-and-prompting.md` · `platform-deep-dive.md` · `slash-commands-and-customization.md`*

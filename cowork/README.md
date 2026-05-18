@@ -1,6 +1,6 @@
 # Claude Cowork — best-practices research
 
-A technically-deep, **exhaustively source-linked** brief on Claude Cowork best practices — skills, memory, workflow architecture, prompt engineering, and how Cowork differs from Claude Code. Written for a **technically literate power user** who builds skills/workflows and does heavy prompt engineering for a team, and who is approaching Cowork with a Claude Code power-user's mental model.
+A technically-deep, **exhaustively source-linked** brief on Claude Cowork best practices — skills, memory, workflow architecture, prompt engineering, and how Cowork differs from Claude Code. Written for a **technically literate power user** who builds skills/workflows and does heavy prompt engineering for a team, and who is approaching Cowork with a Claude Code power-user's mental model. [best-practices.md](best-practices.md) adds the **practitioner delta** (best practices *not* in the upfront docs) through a **Customer Success Manager** usage lens.
 
 Every non-obvious claim in every doc carries an inline source URL. Each doc ends with a numbered `## Sources` list and a `## Confidence & gaps` section separating Anthropic-official facts from community/press inference and flagging staleness.
 
@@ -9,6 +9,8 @@ Every non-obvious claim in every doc carries an inline source URL. Each doc ends
 Compiled **2026-05-18** by six parallel Opus research agents, each owning one slice and instructed to verify against **live web research** (Anthropic knowledge is past training cutoff and Cowork is fast-moving), prioritize official Anthropic sources (`docs.claude.com` / `code.claude.com`, `support.claude.com` help center, `claude.com/blog`, `anthropic.com`, `privacy.claude.com`, Anthropic Academy), cite only pages actually fetched, and explicitly mark official vs. community and call out gaps.
 
 Because Cowork shipped Jan 2026 → GA Apr 2026 with a rapid release cadence, **re-verify anything tagged beta/preview against the live Anthropic help center before stakeholder-facing commitments.** Where official docs and community reports disagree, the docs say so rather than papering over it.
+
+A **second research wave (also 2026-05-18)** ran six more parallel Opus agents tasked specifically with the **practitioner delta** — best practices *not* in the upfront official documentation — and a **Customer Success Manager** usage lens. Its synthesis is [best-practices.md](best-practices.md). It leans more heavily on community/practitioner sources (clearly tiered and flagged) than the official-doc-anchored deep dives, because that delta is the point; treat its CSM workflow layer as directional craft, not Anthropic-validated.
 
 ## Source-verification pass (2026-05-18)
 
@@ -26,6 +28,7 @@ Each affected doc's `## Confidence & gaps` has been updated to reflect these res
 | Doc | What it covers | Read it for |
 |---|---|---|
 | [cheatsheet.md](cheatsheet.md) | One-page printable distillation of every doc below | Print-and-go quick reference |
+| [best-practices.md](best-practices.md) | The **practitioner delta**, not the official basics: a **Customer Success Manager playbook** (knowledge-work-plugin fork path, connector reality, churn/QBR/VoC workflows), plus skill-eval/description-engineering, memory hygiene, the settled multi-agent answer, Opus 4.7 prompting deltas, the host-vs-VM/lethal-trifecta/compliance-gap depth, cost & adoption | "What do experienced users know that the docs don't say?" — and the CSM angle |
 | [overview-and-cowork-vs-code.md](overview-and-cowork-vs-code.md) | What Cowork is; execution model; **full Code-vs-Cowork feature matrix**; rollout timeline | The big picture + the comparison table |
 | [skills.md](skills.md) | Agent Skills deep dive: `SKILL.md` schema, progressive disclosure, authoring best practices, anti-patterns, evals, scope/distribution, Cowork specifics | Building good skills |
 | [memory.md](memory.md) | Disambiguates the **four** different "memory" systems; which one Cowork actually uses; hygiene, governance, failure modes | Not confusing chat memory with project memory |
@@ -50,6 +53,7 @@ Each affected doc's `## Confidence & gaps` has been updated to reflect these res
 - **Four things, don't conflate them:** *Instructions* = always-on rules/tone · *Skills* = repeatable procedures (load on demand) · *Memory* = what Claude learned (project-scoped; **gone in standalone sessions**) · *Connectors* = live data, never a copied list.
 - **Build evals before the skill.** Iterate with one Claude writing it and a fresh Claude using it on real tasks.
 - **Govern it:** least-folder access, "Ask before acting" for anything stakeholder-facing/system-of-record-writing, no secrets/PII baked into skills, distribute team setups as **admin-managed plugins** (custom skills are otherwise per-user). Note for IT: Cowork history is **local per user**, outside standard retention, and **not in the Compliance API**.
+- **For practitioners (and CSMs specifically): start from [best-practices.md](best-practices.md).** Don't build CS workflows from scratch — fork Anthropic's `knowledge-work-plugins` (`customer-support` + `sales`); the win is whole-corpus batch synthesis, **not** live CRM write-back (no native Gainsight/Catalyst/Planhat/Salesforce connector today); skill descriptions route on keywords, so engineer them against an eval set; one orchestrator owns context, sub-agents are read-only; treat every run as needing human review.
 
 ## Caveats
 
