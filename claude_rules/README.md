@@ -19,6 +19,7 @@ Because this is a fast-moving area, **re-verify anything tagged version-sensitiv
 |---|---|---|
 | [cheatsheet.md](cheatsheet.md) | One-page printable distillation of the whole set | Print-and-go quick reference |
 | [audit-rubric.md](audit-rubric.md) | **The deliverable** — a scored, ID'd checklist (severity, detection, remediation) an agent runs against a repo; static-vs-runtime split; an output format | Grading a repo's setup against best practice |
+| [example-prompt.md](example-prompt.md) | A copy-paste prompt that drives the audit→plan→refactor flow against a real repo, with setup notes (`--add-dir`, plan mode) | Actually running the kit against a work repo |
 | [claude-md-anatomy.md](claude-md-anatomy.md) | The `CLAUDE.md` file: every load location & order, the discovery walk, `@imports` (inline/4-hop), HTML-comment stripping, AGENTS.md interop, `/init`, authoring-for-adherence | How CLAUDE.md actually loads & how to write a kept line |
 | [rules-directory.md](rules-directory.md) | `.claude/rules/`: recursive discovery, `paths:` globs, priority, symlinks, naming taxonomy, the **reliability gotchas**, Cursor comparison, rule-vs-CLAUDE.md-vs-skill decision | What goes in `.claude/rules/` and when to trust `paths:` |
 | [choosing-the-right-mechanism.md](choosing-the-right-mechanism.md) | The **decision system**: a master table routing any instruction by load-timing / context-cost / guarantee-vs-guidance across all ~16 mechanisms; the enforcement escape hatch; the promotion ladder | "Where does this instruction belong?" — the hub doc |
