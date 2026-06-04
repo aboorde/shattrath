@@ -49,8 +49,9 @@ One row per mechanism. `Load timing` and `Context cost` use the vocabulary above
 The official "context cost by feature" table is the basis for the `Context cost` column above (source: https://code.claude.com/docs/en/features-overview):
 
 - **CLAUDE.md** — loads full content at session start; costs context *every request*.
-- **Skills** — descriptions load at start; full body loads only when used. Low recurring cost, but descriptions share a budget (~1% of the context window, capped per entry) and silently truncate when many skills are loaded (source: https://code.claude.com/docs/en/skills).
+- **Skills** — descriptions load at start; full body loads only when used. Low recurring cost, but descriptions share a budget (~1% of the context window) and each entry's combined `description` + `when_to_use` text is capped at **1,536 characters** regardless of budget, so descriptions silently truncate when many skills are loaded (source: https://code.claude.com/docs/en/skills).
 - **MCP** — tool names + server instructions load at start; full schemas deferred until needed by Tool Search (on by default), so adding servers has minimal impact (source: https://code.claude.com/docs/en/mcp).
+- **Code intelligence (LSP)** — loads diagnostics after file edits and symbol locations on lookup; low cost that often *reduces* net context by replacing broad file reads (source: https://code.claude.com/docs/en/features-overview).
 - **Subagents** — isolated from the main session; the parent only receives a summary.
 - **Hooks** — load nothing and cost zero unless the hook returns additional context (source: https://code.claude.com/docs/en/features-overview).
 
@@ -131,7 +132,7 @@ When the same kind of mechanism is defined at multiple scopes, the reconciliatio
 | **Skills / Subagents** | **Override by name** — a same-named definition from a higher-precedence scope replaces the lower one. |
 | **MCP** | **Override by name** — the whole server entry from the highest source wins; fields not merged. |
 | **Hooks** | **Merge** — *all registered hooks fire for their matching events regardless of source.* |
-| **Permissions** | **Merge across scopes; deny always wins** (managed deny is non-bypassable). |
+| **Permissions** | **Merge across scopes; deny always wins** (managed deny is non-bypassable) (source: https://code.claude.com/docs/en/settings). |
 
 Implication for auditors: you cannot "turn off" a managed hook or a managed deny from a lower scope. And because hooks merge, a project hook and a user hook both fire — there is no silent shadowing.
 
@@ -147,6 +148,7 @@ The official "build your setup over time" triggers give a concrete escalation pa
 | You **retyped the same prompt** | A **user-invocable skill** |
 | You **pasted the same playbook a 3rd time** | A **skill** |
 | You keep **copying from a browser tab** | An **MCP** server |
+| Claude **reads many files to find where a symbol is defined or used** | A **code intelligence (LSP) plugin** for your language |
 | A side task **floods the conversation** | A **subagent** |
 | You want it to **happen every time without asking** | A **hook** |
 | A **second repo** needs the same setup | A **plugin** |
@@ -177,11 +179,12 @@ To place any instruction, walk the axes in priority order: if it **must be guara
 8. https://code.claude.com/docs/en/plugins — *(official)* "Plugins." Backs: plugin as a packaging layer bundling skills/agents/hooks/MCP/LSP + default settings, namespaced `/plugin:skill`, and when to use a plugin vs standalone `.claude/`.
 9. https://theaiarchitects.com/blog/claude-code-subagents-vs-skills — *(community)* Backs the three subagent-vs-skill signals (floods context / mechanical cheaper-model / sensitive tools) and the "write a skill first" default.
 10. https://boringbot.substack.com/p/claude-code-skills-subagents-hooks — *(community)* Backs the skill→subagent→agent-team cost-vs-isolation spectrum and the harness-vs-subagent orchestration separation.
+11. https://code.claude.com/docs/en/output-styles — *(official)* Backs: an output style modifies the system prompt and is read once at session start; the CLAUDE.md (user-message-after-system-prompt) vs `--append-system-prompt` (appends-to-system-prompt) tier distinction.
 
 ## Confidence & gaps
 
 - **Verified-official (high confidence):** the entire master table's load-timing / context-cost / guarantee-vs-guidance assignments, the "request vs guarantee" rule, the hook blocking taxonomy, `PreToolUse` deny surviving `bypassPermissions`, managed-deny > hook-allow precedence, the same-feature reconciliation rules, the promotion ladder, and all MCP/subagent/skill scoping. These come directly from `code.claude.com/docs` pages and are safe to state as fact.
 - **Synthesis / inference (not an official single statement):** the **cost-vs-isolation spectrum** (skill → subagent → agent team) and the **harness-vs-subagent orchestration** framing are community-sourced (boringbot, theaiarchitects); the official docs *imply* but never state these as one axis. Treat them as a useful lens, not an Anthropic guarantee. The three-axis routing rubric itself is this doc's synthesis over the official tables.
-- **Version-sensitive (re-verify on an older CLI):** auto memory (v2.1.59+), and several routing levers noted across the doc set are version-gated — managed-settings.d (v2.1.83+), the hook `if` field (v2.1.85+), `alwaysLoad` (v2.1.121), `--plugin-dir .zip` (v2.1.128). A repo audited on an earlier CLI may lack them. Skill description-budget figures (~1% of context window, per-entry char cap) are current as of 2026-06-04 but are model/version-tunable (`skillListingBudgetFraction`, `maxSkillDescriptionChars`).
-- **Provisional / lightly-documented:** **agent teams** are experimental and disabled by default, so "escalate to a team" is conditional advice. **Output style** and **`--append-system-prompt`** were confirmed at the system-prompt level (the settings page documents `outputStyle` as read once at session start); a dedicated output-styles page was not deep-fetched in this pass, so their finer behavior is asserted at the settings level only.
+- **Version-sensitive (re-verify on an older CLI):** auto memory (v2.1.59+), and several routing levers noted across the doc set are version-gated — managed-settings.d (v2.1.83+), the hook `if` field (v2.1.85+), `alwaysLoad` (v2.1.121), `--plugin-dir .zip` (v2.1.128). A repo audited on an earlier CLI may lack them. Skill description-budget figures (~1% of context window via `skillListingBudgetFraction`; a per-entry cap of **1,536 chars** on combined `description` + `when_to_use` via `maxSkillDescriptionChars`) are current as of 2026-06-04 but are model/version-tunable.
+- **Provisional / lightly-documented:** **agent teams** are experimental and disabled by default, so "escalate to a team" is conditional advice. **Output style** and **`--append-system-prompt`** are confirmed at the system-prompt level: the output-styles page (re-fetched 2026-06-04) documents that an output style modifies the system prompt and is read once at session start, and states the CLAUDE.md ("adds a user message after the system prompt") vs `--append-system-prompt` ("appends to the system prompt") tier distinction (source: https://code.claude.com/docs/en/output-styles).
 - **Path-scoped `.claude/rules/` fragility** is flagged here but documented in detail (with the specific GitHub issues) in [rules-directory.md](rules-directory.md); the version at which rules shipped is community-asserted, not in the reachable official changelog.

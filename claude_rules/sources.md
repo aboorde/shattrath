@@ -1,6 +1,6 @@
 # Sources — consolidated index
 
-*Every source cited across the `claude_rules` topic, tiered official vs community, with what it backs and which docs use it. Compiled 2026-06-04 from live web research; re-verify fast-moving items (path-scoped-rule bugs, auto-dream, version-gated keys) against the running Claude Code version before relying on them. 64 distinct sources: 32 official, 32 community.*
+*Every source cited across the `claude_rules` topic, tiered official vs community, with what it backs and which docs use it. Compiled 2026-06-04 from live web research; re-verify fast-moving items (path-scoped-rule bugs, auto-dream, version-gated keys) against the running Claude Code version before relying on them. 69 distinct sources: 34 official, 35 community (5 added in a 2026-06-04 re-verification pass — see the additions table near the end).*
 
 Tiering follows this repo's convention: **official** = Anthropic-controlled (`code.claude.com`, `platform.claude.com`, `claude.com/blog`, `anthropic.com`, the `anthropics/claude-code` issue tracker, MCP/Linux Foundation); **community** = practitioner blogs, academic preprints, and third-party tools. Official-issue-tracker entries are official *signals* (the report exists / its status), not documentation — their status churns.
 
@@ -46,7 +46,7 @@ Tiering follows this repo's convention: **official** = Anthropic-controlled (`co
 | # | Source | Backs | Cited by |
 |---|---|---|---|
 | 26 | [Issue #5502 — CLAUDE.md ignored until asked](https://github.com/anthropics/claude-code/issues/5502) *(closed not-planned)* | Documents the user-message-not-system-prompt adherence gap | adherence, audit |
-| 27 | [Issue #6973 — user-message vs `--append-system-prompt`](https://github.com/anthropics/claude-code/issues/6973) | The tier distinction and the system-prompt-priority lever | adherence |
+| 27 | [Issue #6973 — user-message vs `--append-system-prompt`](https://github.com/anthropics/claude-code/issues/6973) *(closed not-planned; docs-clarification request)* | Corroborates the tier distinction / system-prompt-priority lever — the distinction itself is documented on the Output Styles page (#67) | adherence |
 | 28 | [Issue #16853 — path rules don't load in subdirs](https://github.com/anthropics/claude-code/issues/16853) *(open, v2.1.1)* | Path-scoped-rule reliability bug (never-loads) | rules-directory, audit |
 | 29 | [Issue #16299 — path rules load globally](https://github.com/anthropics/claude-code/issues/16299) *(open, v2.0.76)* | The contradictory path-scoped-rule bug (loads-everywhere) | rules-directory, audit |
 | 30 | [Issue #38487 — path rules blind to file creation](https://github.com/anthropics/claude-code/issues/38487) *(closed not-planned)* | Triggers on Read/Edit, not Write of a new file | rules-directory, audit |
@@ -101,6 +101,20 @@ Tiering follows this repo's convention: **official** = Anthropic-controlled (`co
 | 62 | [serendb — Claude Code's local memory is a security risk](https://serendb.com/blog/claude-code-local-memory-security-risk) | `~/.claude/projects` world-readable plaintext; transcripts capture secrets; grep recipe | auto-memory, audit |
 | 63 | [wmedia.es — the /context command](https://wmedia.es/en/tips/claude-code-context-command-token-usage) | A real `/context` capture: system tools ~17.6K dwarf memory ~302 tokens | context, audit |
 | 64 | [DAIR.AI — Does AGENTS.md actually help?](https://academy.dair.ai/blog/agents-md-evaluation) | Additional coverage of the AGENTS.md evaluation (available as alternate coverage of #37) | — (reference) |
+
+---
+
+## Verification-pass additions (2026-06-04)
+
+These five sources were added in a full re-verification of every claim against live primary sources (156 claims checked; 142 confirmed). They restore the "100% of cited URLs trace to this index" invariant (the mindstudio link had been cited but un-indexed) and re-attribute two figures that earlier traced to the wrong source.
+
+| # | Source | Tier | Backs | Cited by |
+|---|---|---|---|---|
+| 65 | [Issue #32161 — 258-file vault written-to but never read](https://github.com/anthropics/claude-code/issues/32161) *(closed duplicate)* | official tracker | The real source of the "258 files, written but never read" write-only-knowledge figure (previously mis-attributed to mindstudio) | adherence |
+| 66 | [Self-evolving Claude Code memory (mindstudio.ai)](https://www.mindstudio.ai/blog/self-evolving-claude-code-memory-obsidian-hooks) | community | The `Stop`-hook self-improving loop + the "never prunes → noisy" pruning warning (previously cited but absent from this index) | adherence |
+| 67 | [Output styles](https://code.claude.com/docs/en/output-styles) | official | The official statement of the CLAUDE.md ("adds a user message after the system prompt") vs `--append-system-prompt` ("appends to the system prompt") tier distinction | adherence |
+| 68 | [Cursor — Rules](https://cursor.com/docs/context/rules) *(third-party / Cursor official)* | community | Cursor's four rule activation modes — confirms the fourth (Apply Manually = `@rule-name`) that paddo.dev omits | rules-directory |
+| 69 | [Context-rot rules of thumb (morphllm.com)](https://www.morphllm.com/context-rot) | community | The 300K–400K (1M-window) and ~50K (200K-window) threshold figures, presented there as the author's own illustration — **not** from the Chroma report | context |
 
 ---
 
