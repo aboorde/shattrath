@@ -1,6 +1,6 @@
 # Example prompt — audit & refactor a repo's setup
 
-*A copy-paste prompt that points Claude Code at this kit and drives an audit → plan → refactor of a repo's `CLAUDE.md` / `.claude/rules/` setup. Compiled 2026-06-04.*
+*A copy-paste prompt that points Claude Code at this kit and drives an audit → plan → refactor of a repo's `CLAUDE.md` / `.claude/rules/` setup. Compiled 2026-06-04; tracks the re-verified kit.*
 
 Use this when you pull this repo down and want to turn another repo's neglected, `/init`-once `CLAUDE.md` (plus existing internal plugin skills) into an effective, scalable instruction architecture.
 
@@ -36,7 +36,8 @@ DO — PHASE 1, AUDIT (no edits yet):
   PreToolUse hook / permissions.deny backing.
 - Specifically check the CLAUDE.md↔skills boundary: content in CLAUDE.md that duplicates or contradicts a
   plugin skill; conventions that should be a skill or a path-scoped rule, not always-on prose; skill
-  descriptions that won't be discovered (lead-with-keywords); /init bloat and stale model-workaround rules.
+  descriptions that won't survive truncation (combined description + when_to_use is capped at 1,536 chars —
+  lead with the keywords a real request would contain); /init bloat and stale model-workaround rules.
 - Mark anything that needs a live session (whether files actually load, token cost, dead skills) as
   "requires runtime verification" — and ask me to paste `/memory`, `/context`, and `/status` output if useful.
 
@@ -44,7 +45,10 @@ DO — PHASE 2, PLAN:
 Propose the target architecture and STOP for my approval before writing files. Show:
 - A slimmed root CLAUDE.md (<200 lines: only non-inferable, behavior-shifting facts; positive, scoped, why-attached).
 - Which content moves to .claude/rules/ (which path-scoped vs unconditional), to our existing skills, or to new
-  hooks/permissions.deny (for anything that must hold every time).
+  hooks/permissions.deny (for anything that must hold every time); for the rare behavioral rule that needs
+  system-prompt priority but isn't hook-enforceable, note --append-system-prompt or managed claudeMd.
+- If the repo is large or typed and Claude greps to find where symbols live, recommend a code-intelligence
+  (LSP) plugin in the plan (the routing ladder's newest official lever — it's setup/config, not app code).
 - For a monorepo: two-level layering (root + per-package) and starting-directory guidance.
 - A diff-style before/after of CLAUDE.md and a file list of what gets created/moved/deleted.
 
